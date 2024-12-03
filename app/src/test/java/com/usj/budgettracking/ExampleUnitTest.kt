@@ -1,4 +1,4 @@
-package com.usj.midtermrachadsouaiby
+package com.usj.budgettracking
 
 import org.junit.Test
 

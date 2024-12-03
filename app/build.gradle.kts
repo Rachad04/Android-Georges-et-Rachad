@@ -1,28 +1,27 @@
 plugins {
-    id("com.android.application") version "8.1.2" // Correct version for Android plugin
-    id("org.jetbrains.kotlin.android") version "1.9.10" // Updated Kotlin version
-    id("kotlin-kapt") // Enable Kotlin Annotation Processing
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
-    namespace = "com.usj.midtermrachadsouaiby"
-    compileSdk = 34
+    namespace = "com.usj.budgettracking"
+    compileSdk = 35
+
+
+    viewBinding {
+        enable = true
+    }
 
     defaultConfig {
-        applicationId = "com.usj.midtermrachadsouaiby"
+        applicationId = "com.usj.budgettracking"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
 
-        // Room Schema Location (to allow kapt to generate schema files)
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments["room.schemaLocation"] = "$projectDir/schemas"
-                arguments["room.incremental"] = "true"
-            }
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
         }
     }
 
@@ -46,52 +45,40 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
         compose = true
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.6.0"
+        kotlinCompilerExtensionVersion = "1.5.1"
     }
 
     packaging {
-        resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
 }
+
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.10.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.activity:activity-compose:1.7.2")
-    implementation("androidx.compose.ui:ui:1.6.0")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.6.0")
-    implementation("androidx.compose.material3:material3:1.1.0")
-
-    // Room Database
-    implementation("androidx.room:room-runtime:2.5.2")
-    implementation(libs.androidx.runtime.livedata)
-    kapt("androidx.room:room-compiler:2.5.2")
-    implementation("androidx.room:room-ktx:2.5.2")
-
-    // ViewModel and LiveData for Compose
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1") // for ViewModel with Compose
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1") // for LiveData with Compose
-
-    // ConstraintLayout
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-
-    // RecyclerView
-    implementation("androidx.recyclerview:recyclerview:1.2.1")
-
-    // Testing
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-}
-
-kapt {
-    arguments {
-        arg("room.schemaLocation", "$projectDir/schemas")
-        arg("room.incremental", "true")
-    }
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.room.common)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.cardview)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }
